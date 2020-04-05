@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "320456596612",
+    "firebase_url": "https://semiotic-axis-270803.firebaseio.com",
+    "project_id": "semiotic-axis-270803",
+    "storage_bucket": "semiotic-axis-270803.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320456596612:android:0a0cfc002929ef599ef6d1",
+        "android_client_info": {
+          "package_name": "com.example.yurynikolaev.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320456596612-i73t790klslmtlb5eihvnm76m5j8hhgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH2Mu6sG7NU3r9qO22cz_TgioGBy_J_8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320456596612-i73t790klslmtlb5eihvnm76m5j8hhgs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
