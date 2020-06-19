@@ -1,22 +1,32 @@
 package com.example.yurynikolaev.myapplication;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.yurynikolaev.myapplication.views.fragments.FragmentThree;
+import com.example.yurynikolaev.myapplication.views.adapters.RecViewAdapter;
+import com.example.yurynikolaev.myapplication.views.adapters.SoundAdapter;
 import com.example.yurynikolaev.myapplication.views.fragments.FragmentTwo;
 import com.example.yurynikolaev.myapplication.views.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,12 +36,16 @@ import androidx.fragment.app.Fragment;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private double latitude = 0, longitude = 0;
+    public ArrayList<ListModel> list;
+    SoundAdapter soundAdapter;
 
     MediaPlayer mediaPlayer;
 
     HomeFragment homeFragment = new HomeFragment();
     FragmentTwo fragmentTwo = new FragmentTwo();
-    FragmentThree fragmentThree = new FragmentThree();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -68,10 +82,62 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return;
         }
         setContentView(R.layout.activity_main);
-
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("items");
-        Query query = dbRef.orderByKey();
+        //Query query = dbRef.orderByKey();
+
+        soundAdapter = new SoundAdapter();
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+        locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+        locationManager.requestLocationUpdates("network", 0, 0, locationListener);
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<ListModel>();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    ListModel p = ds.getValue(ListModel.class);
+                    list.add(p);
+                    String name = ds.getKey();
+                    Double lat = dataSnapshot.child(name).child("latitude").getValue(Double.class);
+                    Double lon = dataSnapshot.child(name).child("longitude").getValue(Double.class);
+                    if (((latitude - lat) < 0.02) & ((longitude - lon) < 0.02)) {
+                        String url = dataSnapshot.child(name).child("audioDesc").getValue(String.class);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         BottomNavigationView bnView = findViewById(R.id.navigation);
         bnView.setSelectedItemId(R.id.navigation_home);
         bnView.setOnNavigationItemSelectedListener(this);

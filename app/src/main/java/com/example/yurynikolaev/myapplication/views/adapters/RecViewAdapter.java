@@ -1,6 +1,7 @@
 package com.example.yurynikolaev.myapplication.views.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.yurynikolaev.myapplication.ListModel;
 import com.example.yurynikolaev.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,8 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.ListView
     public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
         holder.textName.setText(items.get(position).getName());
         holder.textDesc.setText(items.get(position).getDesc());
+        Picasso.get().load(items.get(position).getImageUrl()).into(holder.objImage);
+        //Picasso.get().load(items.get(position).getImageUrl()).fit().centerCrop().into(holder.objImage);
     }
 
     @Override

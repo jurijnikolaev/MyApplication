@@ -26,9 +26,8 @@ package com.example.yurynikolaev.myapplication.views.fragments;
 public class FragmentTwo extends Fragment {
 
     private RecyclerView recyclerView;
-    private ArrayList<ListModel> list;
+    public ArrayList<ListModel> list;
     private RecViewAdapter adapter;
-
     private FirebaseDatabase database;
     private DatabaseReference reference;
 

@@ -2,18 +2,16 @@ package com.example.yurynikolaev.myapplication;
 
 public class ListModel {
 
-    private String name;
-    private String desc;
-    private String objImage;
-    private double latitude;
-    private double longitude;
+    private String name, desc, imageUrl, audiodesc;
+    private double latitude, longitude;
 
     public ListModel() {}
 
-    public ListModel(String name, String desc, String objImage, double latitude, double longitude) {
+    public ListModel(String name, String desc, String imageUrl,String audiodesc, double latitude,double longitude) {
         this.name = name;
         this.desc = desc;
-        this.objImage = objImage;
+        this.imageUrl = imageUrl;
+        this.audiodesc = audiodesc;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -26,18 +24,22 @@ public class ListModel {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
-    }
+    public String getDesc() { return desc; }
 
     public void setDesc(String desc) {
         this.desc = desc;
     }
 
-    public String getObjImage() { return objImage; }
+    public String getImageUrl() { return imageUrl; }
 
-    public void setObjImage(String objImage) {
-        this.objImage = objImage;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getAudioDesc() { return audiodesc; }
+
+    public void setAudioDesc(String audiodesc) {
+        this.audiodesc = audiodesc;
     }
 
     public double getLatitude() { return latitude; }
